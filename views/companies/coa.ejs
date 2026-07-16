@@ -1,0 +1,278 @@
+<%- include('../include/header.ejs') %>
+<section class="content">
+    <div class="row pt-3">
+        <div class="col-md-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="text-danger"><u>Rules:</u></h3>
+                </div>
+                <div class="card-body">
+                    <ol type="A" class="text-danger text-bold">
+                        <li>Make sure you choose the company name carefully while creating the Head. It cannot be changed later.</li>
+                        <li>All fields except the coimpany name can be edited later.</li>
+                        <li>Delete cannot happen if Head has sub-head/ledger/entries under itself.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-2">Choose Company :</div>
+                        <div class="col-md-6">
+                            <select class="form-control select2" id="company" name="company">
+                                <option value="0">Select a company</option>
+                                <% data.allcompanies.map((element)=>{%>
+                                    <option value="<%=element.id%>"><%=element.name%></option>
+                                <% })%>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn bg-purple" id="btnopenaddhead">Add New Account Head</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="tblvwcoa" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Number</th>
+                                <th>Parent Name</th>
+                                <th>Show in</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Number</th>
+                                <th>Parent Name</th>
+                                <th>Show in</th>
+                                <th>Description</th>
+                            </tr>
+                        </tfoot>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-newcoa">
+        <div class="modal-dialog modal-lg">
+            <form id="addnewcoaform" name="addnewcoaform">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">Add New Account Head: <span id="vwcompname" name="vwcompname"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                            <div class="card-body addnewcoaform">
+                                <input type="hidden" id="compid" name="compid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="coatype">Place Under *</label>
+                                            <select class="form-control" id="allacchead" name="allacchead">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="coaname">Head Name *</label>
+                                            <input class="form-control" id="coaname" name="coaname" placeholder="Please enter head name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="coanumber">Head Number *</label>
+                                            <input class="form-control" id="coanumber" name="coanumber" placeholder="Please enter head number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="showpl">Show in Profit & Loss *</label><br>
+                                            <input type="checkbox" id="showpl" name="showpl" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="showbs">Show in Balance Sheet *</label><br>
+                                            <input type="checkbox" id="showbs" name="showbs" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="coadesc">Description *</label>
+                                            <input class="form-control" id="coadesc" name="coadesc" placeholder="Please enter description">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="sbmtnewcoaadd">Save changes</button>
+                    </div>
+                </div>
+            </form>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <div class="modal fade" id="modal-editcoa">
+        <div class="modal-dialog modal-lg">
+            <form id="editcoaform" name="editcoaform">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">Edit Account Head: 
+                        <span id="editcompname" name="editcompname"></span>
+                        <button class="btn btn-md btn-danger" id="btndelcoa" type="button"><i class="fas fa-trash"></i></button>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                            <div class="card-body editcoaform">
+                                <input type="hidden" id="editcompid" name="editcompid">
+                                <input type="hidden" id="editcoapid" name="editcoapid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="editcoatype">Place Under *</label>
+                                            <select class="form-control" id="editallacchead" name="editallacchead">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="editcoaname">Head Name *</label>
+                                            <input class="form-control" id="editcoaname" name="editcoaname" placeholder="Please enter head name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="editcoanumber">Head Number *</label>
+                                            <input class="form-control" id="editcoanumber" name="editcoanumber" placeholder="Please enter head number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="editshowpl">Show in Profit & Loss *</label><br>
+                                            <input type="checkbox" id="editshowpl" name="editshowpl" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="editshowbs">Show in Balance Sheet *</label><br>
+                                            <input type="checkbox" id="editshowbs" name="editshowbs" data-bootstrap-switch data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="editcoadesc">Description *</label>
+                                            <input class="form-control" id="editcoadesc" name="editcoadesc" placeholder="Please enter description">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="btnvwledgers">View Ledgers</button>
+                    <button type="submit" class="btn btn-primary" id="sbmteditcoaadd">Save changes</button>
+                    </div>
+                </div>
+            </form>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <div class="modal fade" id="modal-vwledgers">
+        <div class="modal-dialog modal-xl">
+            <form id="editcoaform" name="editcoaform">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">All ledgers under: 
+                        <span id="vwledgroupname" name="vwledgroupname"></span>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-striped" id="tblvwledgers">
+                            <thead>
+                                <tr>
+                                    <th>Sl.No.</th>
+                                    <th>Name</th>
+                                    <th>Opening Date</th>
+                                    <th>Opening Balance</th>
+                                    <th>Ledger Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblvwledgersbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+</section>
+<%- include('../include/footer.ejs') %>
+<!-- Custom JS Scripts-->
+<script src="/dist/js/pages/coa.js"></script>

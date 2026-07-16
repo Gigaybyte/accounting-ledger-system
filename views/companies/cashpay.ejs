@@ -1,0 +1,350 @@
+<%- include('../include/header.ejs') %>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row pt-4">
+                <div class="col-md-12">
+                    <div class="card card-default" id="ledgertab">
+                        <div class="card-header">
+                            <div class="col-md-6">Existing Ledgers (if Any)</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control select2" id="vwcomps" name="vwcomps">
+                                        <option value="0">Select one company</option>
+                                        <% data.allcompanies.map((element)=>{%>
+                                            <option value="<%=element.id%>">
+                                                <%=element.name%>
+                                            </option>
+                                            <% })%>
+                                    </select>
+                                </div>
+                                <input type="hidden" id="financialyearstart">
+                                <input type="hidden" id="financialyearend">
+                                <div class="col-md-5">
+                                    <select class="form-control select2" id="vwledger" name="vwledger"></select>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-md btn-success" id="btnrefreshledgers" data-attr="$(this)"
+                                        type="button"><i class="fas fa-circle"></i></button>
+                                </div>
+                                <div class="pt-2 col-md-12" id="ledgerdtls">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                Ledger Details
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="hidden" id="companyid">
+                                                    <input type="hidden" id="ledgergrupid">
+                                                    <input type="hidden" id="taximposeid">
+                                                    <input type="hidden" id="finyearid">
+                                                    <input type="hidden" id="opbaltypeid">
+                                                    <input type="hidden" id="ledtypeid">
+                                                    <input type="hidden" id="ledgerid" name="ledgerid">
+                                                    <dl>
+                                                        <dt>Ledger Name</dt>
+                                                        <dd><span id="ledgernames"></span></dd>
+                                                        <dt>Ledger Group Name</dt>
+                                                        <dd><span id="ledgergrpname"></span></dd>
+                                                        <dt>Reconciliation Required</dt>
+                                                        <dd><span id="reconreq"></span></dd>
+                                                        <dt>Tax Impose</dt>
+                                                        <dd><span id="taximpose"></span></dd>
+                                                        <dt>Financial Year of Opening</dt>
+                                                        <dd><span id="opfinyear"></span></dd>
+                                                    </dl>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <dl>
+                                                        <dt>Opening Date</dt>
+                                                        <dd><span id="opdate"></span></dd>
+                                                        <dt>Opening Balance</dt>
+                                                        <dd><span id="opbal"></span></dd>
+                                                        <dt>Ledger Type</dt>
+                                                        <dd><span id="ledger_type"></span></dd>
+                                                        <dt>Ledger Description</dt>
+                                                        <dd><span id="ledgerdescription"></span></dd>
+                                                        <dt>Active</dt>
+                                                        <dd><span id="sts"></span></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="row">
+                                                <div class="pt-2 col-md-10">
+                                                    <button class="btn btn-info" id="btnopenentry">Add Entry</button>
+                                                    <input type="hidden" id="durl" name="durl">
+                                                    <input type="hidden" id="transtype" name="transtype">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select class="form-control select2" id="vwfinyear"
+                                                        name="vwfinyear"></select>
+                                                </div>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="pt-2 col-md-12" id="ledgerstatmenttab">
+                                    <h6 class="pt-2"><strong>Detailed Statement</strong></h6>
+                                    <table class="table table-bordered table-striped" id="tblvwledgerstatement">
+                                        <thead>
+                                            <tr>
+                                                <th>Entry Date</th>
+                                                <th>Posting Date</th>
+                                                <th class="w-30">Description</th>
+                                                <th>Debit</th>
+                                                <th>credit</th>
+                                                <th>Balance</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="vwledgerstatement">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+        <div class="modal fade" id="modal-ledgerentry">
+            <div class="modal-dialog modal-xl modal-newledgerentry">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">New Entry in Ledger: <span class="text-bold" id="vwmodalledgername"></span>
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-2">Ledger ID *</dt>
+                                <dd class="col-sm-4"><input type="text" id="dtledgerid" name="dtledgerid"
+                                        class="form-control" disabled></dd>
+                                <dt class="col-sm-2">TAX Code ID *</dt>
+                                <dd class="col-sm-4"><input type="text" id="dttaxcodeid" name="dttaxcodeid"
+                                        class="form-control" disabled></dd>
+                                <dt class="col-sm-2">Entry Date *</dt>
+                                <dd class="col-sm-4"><input type="text" class="form-control dateonly" id="dtdate" name="dtentrydt"
+                                        placeholder="dd/mm/yyyy"></dd>
+                                <dt class="col-sm-2">Ledger Type *</dt>
+                                <dd class="col-sm-4"><input type="text" class="form-control" id="dtledgertype"
+                                        name="dtledgertype" placeholder="Ledger Type" disabled></dd>
+                                <dt class="col-sm-2">Amount *</dt>
+                                <dd class="col-sm-4"><input type="text" class="form-control" id="dtamnt" name="dtamnt"
+                                        placeholder="Amount"></dd>
+                                <dt class="col-sm-2">Entry on</dt>
+                                <dd class="col-sm-4">
+                                    <select class="form-control" id="dttype" name="dttype">
+                                        <option value="cr">Cr</option>
+                                    </select>
+                                </dd>
+                                <dt class="col-sm-2">Description *</dt>
+                                <dd class="col-sm-4"><textarea id="dtdesc" name="dtdesc" rows="2"
+                                        class="form-control"></textarea></dd>
+                                          <dt class="col-sm-2">Voucher Number *</dt>
+                               <dd class="col-sm-4">
+                                <input type="text" placeholder="Enter Voucher Number" id="dtvoucher" name="dtvoucher"
+                                        class="form-control"></i></dd>
+
+
+
+
+                                <dt class="col-sm-2">Entry Type </dt>
+                                <dd class="col-sm-10">
+    
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Revenue Nature <br>[Profit/Loss Accounting]</th>
+                                                <th>Capital Nature <br>[Balance Sheet Accounting]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" id="btnsingleentry"
+                                                        class="btn btn-block btn-info btn-sm">Realize</button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" id="btncashbsrealize"
+                                                        class="btn btn-block btn-info btn-sm">Realize</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </dd>
+                            </dl>
+                            <div id="singleentry" class="row input-box">
+                                <div class="col-sm-2"><label>Personal Account</label></div>
+                                <div class="col-sm-8">
+                                    <select id="ddlpersonalledger" class="form-control select2">
+                                        <option>Choose Person Ledger</option>
+                                    </select>
+                                    <input type="hidden" id="personalledgertaxid" />
+                                </div>
+                                <div class="row col-md-12 mt-4">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-sm-4"><label>Receipt Voucher <br>Link URL</label></div>
+                                            <div class="col-md-8"><input type="text" class="form-control" id="payvoucherurl"
+                                                    name="payvoucherurl">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-sm-4"><label>Supporting Document <br>Link URL</label></div>
+                                            <div class="col-md-8"><input type="text" class="form-control"
+                                                    id="supportingdocurl" name="supportingdocurl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pt-4">
+                                    <table class="table table-bordered" id="tblrealcat">
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">#</th>
+                                                <th width="40%">Ledger Name</th>
+                                                <th width="10%">Tax Code</th>
+                                                <th>Transaction Narration</th>
+                                                <th width="15%">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblrealcatbody">
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>
+                                                    <button class="btn btn-md btn-success" id="addrowBtn" type="button"><i
+                                                            class="fas fa-plus"></i></button>
+                                                </th>
+                                                <th>Total</th>
+                                                <th>
+                                                </th>
+                                                <th>
+                                                </th>
+                                                <th>
+                                                    <input class="form-control txt-amount text-bold" type="text"
+                                                        id="txttotalamnt" disabled />
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="offset-11 col-md-1">
+                                    <button type="submit" class="btn btn-primary" id="btnrealize">Realize</button>
+                                </div>
+                            </div>
+                            <div id="bsrealizeentry" class="row input-box">
+                                <div class="col-md-12 pt-4">
+                                    <table class="table table-bordered" id="tblbsrealcat">
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">#</th>
+                                                <th width="40%">Ledger Name</th>
+                                                <th width="10%">Tax Code</th>
+                                                <th>Transaction Narration</th>
+                                                <th width="15%">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblbsrealcatbody">
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>
+                                                    <button class="btn btn-md btn-success" id="addrowBtnbs" type="button"><i
+                                                            class="fas fa-plus"></i></button>
+                                                </th>
+                                                <th>Total</th>
+                                                <th>
+    
+                                                </th>
+                                                <th>
+                                                    <input class="form-control txt-amount text-bold" type="text"
+                                                        id="txtbstotalamnt" disabled />
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="offset-11 col-md-1">
+                                    <button type="submit" class="btn btn-primary" id="btnbsrealize">Realize</button>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="modal-viewentrystatement">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Entry Details</h4>
+                        <input type="hidden" id="hfventrydtlsid" name="hfventrydtlsid" />
+                        <button class="btn btn-md btn-danger ml-3" id="btntransrevert" type="button">Revert</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped" id="tblvwentrystatement">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-10">Entry Type</th>
+                                                <th>Entry & Posting Date</th>
+                                                <th>Ledger Name</th>
+                                                <th class="w-40">Description</th>
+                                                <th class="w-10">Debit</th>
+                                                <th class="w-10">credit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="vwentrystatement">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    
+    </section>
+    <!-- Custom JS Scripts-->
+<%- include('../include/footer.ejs') %>
+    <script src="/dist/js/pages/cashpay.js"></script>

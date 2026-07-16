@@ -1,0 +1,53 @@
+<%- include('../include/header.ejs') %>
+<section class="content">
+    <div class="row pt-3">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-2">Choose Company :</div>
+                        <div class="col-md-6">
+                            <select class="form-control select2" id="company" name="company">
+                                <option value="0">Select a company</option>
+                                <% data.allcompanies.map((element)=>{%>
+                                    <option value="<%=element.id%>"><%=element.name%></option>
+                                <% })%>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn bg-purple" id="btnopenaddhead">Add New Account Head</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table id="tblvwcashbook" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Opening Balance</th>
+                                        <th>Closing Balance</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Opening Balance</th>
+                                        <th>Closing Balance</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<%- include('../include/footer.ejs') %>
+<!-- Custom JS Scripts-->
+<script src="/dist/js/pages/cashbook.js"></script>

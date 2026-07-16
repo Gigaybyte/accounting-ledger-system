@@ -1,0 +1,2089 @@
+<%- include('../include/header.ejs') %>
+
+  <section class="content">
+    <div class="container-fluid">
+
+      <div class="row pt-4">
+        <div class="col-12">Existing Companies (if Any)</div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-12 col-sm-12">
+
+          <div class="card card-info card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+              <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="custom-tabs-compdtls-tab" data-toggle="pill" href="#tab_compdtls"
+                    role="tab" aria-controls="custom-tabs-compdtls" aria-selected="true">Company Details</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="custom-tabs-comperson-tab" data-toggle="pill" href="#tab_comperson" role="tab"
+                    aria-controls="custom-tabs-comperson" aria-selected="true">Company Personnel</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="custom-tabs-compdoctype-tab" data-toggle="pill" href="#tab_compdoctype"
+                    role="tab" aria-controls="custom-tabs-compdoctype" aria-selected="true">Company Documents</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content">
+                <div class="tab-pane fade active show" id="tab_compdtls" role="tabpanel"
+                  aria-labelledby="custom-tabs-compdtls-tab">
+                  <div class="row pb-2">
+                    <div class="col-md-2"><button type="button" class="btn bg-purple" data-toggle="modal"
+                        data-target="#modal-newcomp">Add New Company</button></div>
+                  </div>
+                  <div class="card card-primary card-outline card-tabs">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                      <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="custom-tabs-sp-tab" data-toggle="pill" href="#tab_sp"
+                            role="tab" aria-controls="custom-tabs-sp" aria-selected="true">Sole proprietorship</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-pp-tab" data-toggle="pill" href="#tab_pp" role="tab"
+                            aria-controls="custom-tabs-pp" aria-selected="false">Partnership</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-sb-tab" data-toggle="pill" href="#tab_sb" role="tab"
+                            aria-controls="custom-tabs-sb" aria-selected="false">Private limited company (Sdn Bhd)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-bhd-tab" data-toggle="pill" href="#tab_bhd" role="tab"
+                            aria-controls="custom-tabs-bhd" aria-selected="false">Public limited company (Bhd)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-sdn-tab" data-toggle="pill" href="#tab_sdn" role="tab"
+                            aria-controls="custom-tabs-sdn" aria-selected="false">Unlimited company (Sdn)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-fc-tab" data-toggle="pill" href="#tab_fc" role="tab"
+                            aria-controls="custom-tabs-fc" aria-selected="false">Foreign company</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-llp-tab" data-toggle="pill" href="#tab_llp" role="tab"
+                            aria-controls="custom-tabs-llp" aria-selected="false">Limited liability partnership</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-clbg-tab" data-toggle="pill" href="#tab_clbg" role="tab"
+                            aria-controls="custom-tabs-clbg" aria-selected="false">Company Limited by Guarantee
+                            (CLG)</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-body">
+                      <div class="tab-content" id="custom-tabs-sp-tabContent">
+                        <div class="tab-pane fade active show" id="tab_sp" role="tabpanel"
+                          aria-labelledby="custom-tabs-sp-tab">
+                          <% if(data.sp.length<1){%>
+                            <div id="sp_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.sp.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_pp" role="tabpanel" aria-labelledby="custom-tabs-pp-tab">
+                          <% if(data.pp.length<1){%>
+                            <div id="pp_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.pp.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_sb" role="tabpanel" aria-labelledby="custom-tabs-sb-tab">
+                          <% if(data.sb.length<1){%>
+                            <div id="sb_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.sb.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-2">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>">Edit Info</button>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <button type="button" class="btn btn-block btn-outline-dark vwbusinessdtls"
+                                          id="<%=element.dataValues.id%>">Business Details</button>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <button type="button" class="btn btn-block btn-outline-dark vwdirdtls"
+                                          id="<%=element.dataValues.id%>"
+                                          data-compname="<%=element.dataValues.legalname%>">Director Details</button>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <button type="button" class="btn btn-block btn-outline-dark vwshdtls"
+                                          id="<%=element.dataValues.id%>"
+                                          data-compname="<%=element.dataValues.legalname%>">ShareHolders
+                                          Details</button>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <button type="button" class="btn btn-block btn-outline-dark vwcompdoc"
+                                          id="<%=element.dataValues.id%>"
+                                          data-compname="<%=element.dataValues.legalname%>">Company Documents</button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_bhd" role="tabpanel" aria-labelledby="custom-tabs-bhd-tab">
+                          <% if(data.bhd.length<1){%>
+                            <div id="bhd_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.bhd.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_sdn" role="tabpanel" aria-labelledby="custom-tabs-sdn-tab">
+                          <% if(data.sdn.length<1){%>
+                            <div id="sdn_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.sdn.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_fc" role="tabpanel" aria-labelledby="custom-tabs-fc-tab">
+                          <% if(data.fc.length<1){%>
+                            <div id="fc_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.fc.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_llp" role="tabpanel" aria-labelledby="custom-tabs-llp-tab">
+                          <% if(data.llp.length<1){%>
+                            <div id="llp_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.llp.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                        <div class="tab-pane fade" id="tab_clbg" role="tabpanel" aria-labelledby="custom-tabs-clbg-tab">
+                          <% if(data.clbg.length<1){%>
+                            <div id="clbg_head">
+                              <h6>No company exists under the category.</h6>
+                            </div>
+                            <%} else{%>
+                              <% data.clbg.map((element)=>{%>
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-book"></i>
+                                      <%=element.dataValues.legalname +' ('+element.dataValues.createdAt+')'%>
+                                    </h3>
+                                  </div>
+
+                                  <div class="card-body">
+                                    <dl>
+                                      <dt>Legal Name</dt>
+                                      <dd>
+                                        <%=element.dataValues.legalname%>
+                                      </dd>
+                                      <dt>Trading name</dt>
+                                      <dd>
+                                        <%=element.dataValues.tradingname%>
+                                      </dd>
+                                      <dt>Registration Number</dt>
+                                      <dd>
+                                        <%=element.dataValues.registrationnum%>
+                                      </dd>
+                                      <dt>Financial Year Start</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearstart%>
+                                      </dd>
+                                      <dt>Financial Year End</dt>
+                                      <dd>
+                                        <%=element.dataValues.financialyearend%>
+                                      </dd>
+                                      <dt>Main Currency</dt>
+                                      <dd>
+                                        <%=element.dataValues.maincurrency%>
+                                      </dd>
+                                      <dt>Multi Currency Enabled</dt>
+                                      <dd>
+                                        <%=element.dataValues.multiplecurrency%>
+                                      </dd>
+                                      <dt>Active</dt>
+                                      <dd>
+                                        <%=(element.dataValues.sts=='1'?'Yes':'No')%>
+                                      </dd>
+                                    </dl>
+                                  </div>
+
+                                  <div class="card-footer">
+                                    <div class="row">
+                                      <div class="col-sm-1">
+                                        <button type="button" class="btn btn-block btn-outline-info vwcomp"
+                                          id="<%=element.dataValues.id%>"><i class="fas fa-edit"></i></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <%})}%>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="tab_comperson" role="tabpanel"
+                  aria-labelledby="custom-tabs-comperson-tab">
+                  <div class="row pb-2">
+                    <div class="col-md-4">
+                      <h4>Manage Company Personnel</h4>
+                    </div>
+                  </div>
+                  <div class="card card-info card-outline card-tabs">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                      <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="custom-tabs-nperson-tab" data-toggle="pill" href="#tab_nperson"
+                            role="tab" aria-controls="custom-tabs-nperson" aria-selected="true">Add New Person</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-eperson-tab" data-toggle="pill" href="#tab_eperson"
+                            role="tab" aria-controls="custom-tabs-eperson" aria-selected="true">Edit/Delete Person
+                            Details</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-body">
+                      <div class="tab-content">
+                        <div class="tab-pane fade active show" id="tab_nperson" role="tabpanel"
+                          aria-labelledby="custom-tabs-nperson-tab">
+                          <h4>Add New Company Personnel</h4>
+                          <form id="frmpersonadd" name="frmpersonadd">
+                            <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="name">Name *</label>
+                                  <input class="form-control" id="name" name="name" placeholder="Please enter name">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="icpassport">IC/Passport *</label>
+                                  <input class="form-control" id="icpassport" name="icpassport"
+                                    placeholder="Please enter IC/Passport">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="dob">Date of Birth *</label>
+                                  <input class="form-control dateonly" id="dob" name="dob" placeholder="dd/mm/yyyy">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <div class="form-group">
+                                    <label for="nationality">Nationality *</label>
+                                    <select class="form-control select2" id="nationality" name="nationality">
+                                      <option value="">select Country</option>
+                                      <% data.allcountries.map((element)=>{%>
+                                        <option value="<%=element.id%>">
+                                          <%=element.name%>
+                                        </option>
+                                        <% })%>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="percontact">Personal phone number *</label>
+                                  <input class="form-control" id="percontact" name="percontact"
+                                    placeholder="Please enter personal phone number">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="peremail">Personal e-mailid *</label>
+                                  <input class="form-control" id="peremail" name="peremail"
+                                    placeholder="Please enter personal e-mail id">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="occupation">Occupation</label>
+                                  <input class="form-control" id="occupation" name="occupation"
+                                    placeholder="Please enter occupation">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="offcontact">Office phone number</label>
+                                  <input class="form-control" id="offcontact" name="offcontact"
+                                    placeholder="Please enter office phone number">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="offemail">Office e-mailid</label>
+                                  <input class="form-control" id="offemail" name="offemail"
+                                    placeholder="Please enter office e-mail id">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="resaddress">Residential address *</label>
+                                  <input class="form-control" id="resaddress" name="resaddress"
+                                    placeholder="Please enter residential address">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="respincode">Pincode *</label>
+                                  <input class="form-control" id="respincode" name="respincode"
+                                    placeholder="Please enter pincode">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="resstate">State *</label>
+                                  <input class="form-control" id="resstate" name="resstate"
+                                    placeholder="Please enter name of the state">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="rescountry">Country *</label>
+                                  <select class="form-control select2" id="rescountry" name="rescountry">
+                                    <option value="">select Country</option>
+                                    <% data.allcountries.map((element)=>{%>
+                                      <option value="<%=element.id%>">
+                                        <%=element.name%>
+                                      </option>
+                                      <% })%>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="icheck-success d-inline">
+                                <input type="checkbox" id="checkresoffsameadd" wfd-id="id32">
+                                <label for="checkresoffsameadd">
+                                  Click if Residential Address and Correpondense Address is same.
+                                </label>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-12 mt-3">
+                                <div class="form-group">
+                                  <label for="corraddress">Correpondense address *</label>
+                                  <input class="form-control" id="corraddress" name="corraddress"
+                                    placeholder="Please enter Correpondense address">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="corrpincode">Pincode *</label>
+                                  <input class="form-control" id="corrpincode" name="corrpincode"
+                                    placeholder="Please enter pincode">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="corrstate">State *</label>
+                                  <input class="form-control" id="corrstate" name="corrstate"
+                                    placeholder="Please enter name of the state">
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label for="corrcountry">Country *</label>
+                                  <select class="form-control select2" id="corrcountry" name="corrcountry">
+                                    <option value="">select Country</option>
+                                    <% data.allcountries.map((element)=>{%>
+                                      <option value="<%=element.id%>">
+                                        <%=element.name%>
+                                      </option>
+                                      <% })%>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col-md-2 offset-md-10 text-right">
+                                <button type="submit" class="btn btn-primary" id="sbmtpersoneeldtls">Save
+                                  Details</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="tab-pane fade" id="tab_eperson" role="tabpanel"
+                          aria-labelledby="custom-tabs-eperson-tab">
+                          <h4>View/Edit/Delete Company Personnel</h4>
+                          <table id="tblvwcomperson" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Personal Details</th>
+                                <th>Personal Contact</th>
+                                <th>Occupational Details</th>
+                                <th>Residential Address</th>
+                                <th>Correspondense Address</th>
+                              </tr>
+                            </thead>
+                            <tfoot>
+                              <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Personal Details</th>
+                                <th>Personal Contact</th>
+                                <th>Occupational Details</th>
+                                <th>Residential Address</th>
+                                <th>Correspondense Address</th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane face" id="tab_compdoctype" role="tabpanel"
+                  aria-labelledby="custom-tabs-compdoctype-tab">
+                  <div class="row pb-2">
+                    <div class="col-md-4">
+                      <h4>Manage Company Documents Type</h4>
+                    </div>
+                  </div>
+                  <div class="card card-info card-outline card-tabs">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                      <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="custom-tabs-dtype-tab" data-toggle="pill" href="#tab_dtype"
+                            role="tab" aria-controls="custom-tabs-dtype" aria-selected="true">Manage Document Type</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="custom-tabs-dname-tab" data-toggle="pill" href="#tab_dname" role="tab"
+                            aria-controls="custom-tabs-dname" aria-selected="true">Manage Document Name</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-body">
+                      <div class="tab-content">
+                        <div class="tab-pane fade active show" id="tab_dtype" role="tabpanel"
+                          aria-labelledby="custom-tabs-dtype-tab">
+                          <div class="row pb-2">
+                            <div class="col-md-2"><button type="button" class="btn bg-info" data-toggle="modal"
+                                data-target="#modal-adddoctype">Add Document Type</button></div>
+                          </div>
+                          <table class="table table-bordered" id="tblvwdoctype">
+                            <thead>
+                              <tr>
+                                <th class="w-30">Document Type Name</th>
+                                <th class="w-50">Document Type Description</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="tbodyvwdoctype">
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab_dname" role="tabpanel"
+                          aria-labelledby="custom-tabs-dname-tab">
+                          <div class="row pb-2">
+                            <div class="col-md-2">
+                              <button type="button" class="btn bg-info" data-toggle="modal"
+                                data-target="#modal-adddocname">Add Document Name</button>
+                            </div>
+                          </div>
+                          <table class="table table-bordered" id="tblvwdocname">
+                            <thead>
+                              <tr>
+                                <th>Document Type</th>
+                                <th>Document Name</th>
+                                <th>Document Description</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="tbodyvwdocname">
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-newcomp">
+      <div class="modal-dialog modal-lg">
+        <form id="addnewcompform" name="addnewcompform">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add New Company</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="companytype">Choose Company Type *</label>
+                      <select class="form-control select2" id="companytype" name="companytype">
+                        <% data.alltypes.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.typename%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="legalname">Legal Name *</label>
+                      <input class="form-control" id="legalname" name="legalname"
+                        placeholder="Please enter legal name of company">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="tradingname">Trading Name *</label>
+                      <input class="form-control" id="tradingname" name="tradingname"
+                        placeholder="Please enter trading name of company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="registrationnum">Registration Number *</label>
+                      <input class="form-control" id="registrationnum" name="registrationnum"
+                        placeholder="Please enter registration number of the company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="fyst">Financial Year Start *</label>
+                      <input class="form-control" id="fyst" name="fyst" placeholder="Please enter in format of DD/MM">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="fyend">Financial Year End *</label>
+                      <input class="form-control" id="fyend" name="fyend" placeholder="Please enter in format of DD/MM">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="maincurr">Main Currency</label>
+                      <select class="form-control select2" id="maincurr" name="maincurr">
+                        <% data.allcurrencies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="chkmulticurr" class="mr-3">Multi-Currency Enabled</label><br>
+                      <input type="checkbox" id="chkmulticurr" name="chkmulticurr" data-bootstrap-switch
+                        data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="Yes">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtnewcompadd">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-editcomp">
+      <div class="modal-dialog modal-lg">
+        <form id="editcompform" name="editcompform">
+          <input type="hidden" id="editcompid" name="editcompid">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"><b>Edit Company</b> <br>
+                <span id="editcomp" name="editcomp"></span>
+                <button class="btn btn-md btn-danger" id="btndelcompany" type="button"><i
+                    class="fas fa-trash"></i></button>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="editcompanytype">Choose Company Type *</label>
+                      <select class="form-control select2" id="editcompanytype" name="editcompanytype">
+                        <% data.alltypes.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.typename%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="editlegalname">Legal Name *</label>
+                      <input class="form-control" id="editlegalname" name="editlegalname"
+                        placeholder="Please enter legal name of company">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="edittradingname">Trading Name *</label>
+                      <input class="form-control" id="edittradingname" name="edittradingname"
+                        placeholder="Please enter trading name of company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="editregistrationnum">Registration Number *</label>
+                      <input class="form-control" id="editregistrationnum" name="editregistrationnum"
+                        placeholder="Please enter registration number of the company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="editfyst">Financial Year Start *</label>
+                      <input class="form-control" id="editfyst" name="editfyst"
+                        placeholder="Please enter in format of DD/MM">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="editfyend">Financial Year End *</label>
+                      <input class="form-control" id="editfyend" name="editfyend"
+                        placeholder="Please enter in format of DD/MM">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="editmaincurr">Main Currency</label>
+                      <select class="form-control select2" id="editmaincurr" name="editmaincurr">
+                        <% data.allcurrencies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="editchkmulticurr" class="mr-3">Multi-Currency Enabled</label><br>
+                      <input type="checkbox" id="editchkmulticurr" name="editchkmulticurr" data-bootstrap-switch
+                        data-off-color="danger" data-on-color="success" data-off-text="No" data-on-text="Yes">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="editsts" class="mr-3">Active</label><br>
+                      <input type="checkbox" id="editsts" name="editsts" data-bootstrap-switch data-off-color="danger"
+                        data-on-color="success" data-off-text="No" data-on-text="Yes">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtcompedit">Update changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-businessdtls">
+      <div class="modal-dialog modal-lg">
+        <form id="frmbusinessdtls" name="frmbusinessdtls">
+          <input type="hidden" id="businessdtlscompid" name="businessdtlscompid">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"><b>Add/Edit Business Details</b> <br>
+                <span id="businessdtlscomp" name="businessdtlscomp"></span>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="businessnature">Nature of business *</label>
+                      <input class="form-control" id="businessnature" name="businessnature"
+                        placeholder="Please enter the nature of business">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="totalshares">Total Number of share *</label>
+                      <input class="form-control" id="totalshares" name="totalshares"
+                        placeholder="Please enter total number of shares">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="authorizecapital">Authorize capital *</label>
+                      <input class="form-control" id="authorizecapital" name="authorizecapital"
+                        placeholder="Please enter total authorized capital">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="regemail">Registered e-mailid *</label>
+                      <input class="form-control" id="regemail" name="regemail"
+                        placeholder="Please enter registered e-mail id">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="regcontact">Registered phone number *</label>
+                      <input class="form-control" id="regcontact" name="regcontact"
+                        placeholder="Please enter registered phone number">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="regaddress">Registration address *</label>
+                      <input class="form-control" id="regaddress" name="regaddress"
+                        placeholder="Please enter registration address of the company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="regpincode">Pincode *</label>
+                      <input class="form-control" id="regpincode" name="regpincode" placeholder="Please enter pincode">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="regstate">State *</label>
+                      <input class="form-control" id="regstate" name="regstate"
+                        placeholder="Please enter name of the state">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="regcountry">Country</label>
+                      <select class="form-control select2" id="regcountry" name="regcountry">
+                        <option value="">select Business Country</option>
+                        <% data.allcountries.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="icheck-success d-inline">
+                    <input type="checkbox" id="checkregbusinesssamadd" wfd-id="id32">
+                    <label for="checkregbusinesssamadd">
+                      Click if Registered Address and Business Address is same.
+                    </label>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                      <label for="bizaddress">Business address *</label>
+                      <input class="form-control" id="bizaddress" name="bizaddress"
+                        placeholder="Please enter business address of the company">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="bizpincode">Pincode *</label>
+                      <input class="form-control" id="bizpincode" name="bizpincode" placeholder="Please enter pincode">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="bizstate">State *</label>
+                      <input class="form-control" id="bizstate" name="bizstate"
+                        placeholder="Please enter name of the state">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="bizcountry">Country</label>
+                      <select class="form-control select2" id="bizcountry" name="bizcountry">
+                        <option value="">select Business Country</option>
+                        <% data.allcountries.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtbusinessdtls">Update changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-vwcompersondtls">
+      <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title"><b>View/Edit/Delete Details:</b>
+              <button class="btn btn-md btn-danger" id="btndelcompersondtls" type="button"><i
+                  class="fas fa-trash"></i></button>
+            </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="frmpersonedit" name="frmpersonedit">
+            <input type="hidden" id="vwcompersondtlsid" name="vwcompersondtlsid">
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="editname">Name *</label>
+                    <input class="form-control" id="editname" name="editname" placeholder="Please enter name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="editicpassport">IC/Passport *</label>
+                    <input class="form-control" id="editicpassport" name="editicpassport"
+                      placeholder="Please enter IC/Passport">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="editdob">Date of Birth *</label>
+                    <input class="form-control dateonly" id="editdob" name="editdob" placeholder="dd/mm/yyyy">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="form-group">
+                      <label for="editnationality">Nationality *</label>
+                      <select class="form-control select2" id="editnationality" name="editnationality">
+                        <option value="">select Country</option>
+                        <% data.allcountries.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="editpercontact">Personal phone number *</label>
+                    <input class="form-control" id="editpercontact" name="editpercontact"
+                      placeholder="Please enter personal phone number">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="editperemail">Personal e-mailid *</label>
+                    <input class="form-control" id="editperemail" name="editperemail"
+                      placeholder="Please enter personal e-mail id">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editoccupation">Occupation</label>
+                    <input class="form-control" id="editoccupation" name="editoccupation"
+                      placeholder="Please enter occupation">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editoffcontact">Office phone number</label>
+                    <input class="form-control" id="editoffcontact" name="editoffcontact"
+                      placeholder="Please enter office phone number">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editoffemail">Office e-mailid</label>
+                    <input class="form-control" id="editoffemail" name="editoffemail"
+                      placeholder="Please enter office e-mail id">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="editresaddress">Residential address *</label>
+                    <input class="form-control" id="editresaddress" name="editresaddress"
+                      placeholder="Please enter residential address">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editrespincode">Pincode *</label>
+                    <input class="form-control" id="editrespincode" name="editrespincode"
+                      placeholder="Please enter pincode">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editresstate">State *</label>
+                    <input class="form-control" id="editresstate" name="editresstate"
+                      placeholder="Please enter name of the state">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editrescountry">Country *</label>
+                    <select class="form-control select2" id="editrescountry" name="editrescountry">
+                      <option value="">select Country</option>
+                      <% data.allcountries.map((element)=>{%>
+                        <option value="<%=element.id%>">
+                          <%=element.name%>
+                        </option>
+                        <% })%>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="icheck-success d-inline">
+                  <input type="checkbox" id="editcheckresoffsameadd" wfd-id="id32">
+                  <label for="editcheckresoffsameadd">
+                    Click if Residential Address and Correpondense Address is same.
+                  </label>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  <div class="form-group">
+                    <label for="editcorraddress">Correpondense address *</label>
+                    <input class="form-control" id="editcorraddress" name="editcorraddress"
+                      placeholder="Please enter Correpondense address">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editcorrpincode">Pincode *</label>
+                    <input class="form-control" id="editcorrpincode" name="editcorrpincode"
+                      placeholder="Please enter pincode">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editcorrstate">State *</label>
+                    <input class="form-control" id="editcorrstate" name="editcorrstate"
+                      placeholder="Please enter name of the state">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="editcorrcountry">Country *</label>
+                    <select class="form-control select2" id="editcorrcountry" name="editcorrcountry">
+                      <option value="">select Country</option>
+                      <% data.allcountries.map((element)=>{%>
+                        <option value="<%=element.id%>">
+                          <%=element.name%>
+                        </option>
+                        <% })%>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="updtpersoneeldtls">Update changes</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-directorconfig">
+      <div class="modal-dialog modal-lg">
+        <form id="directorconfigform" name="directorconfigform">
+          <input type="hidden" id="hfvconfigdirectorcompid" name="hfvconfigdirectorcompid">
+          <div class="modal-content directorconfig">
+            <div class="modal-header">
+              <h4 class="modal-title">Config. Director for company:</h4>&nbsp;
+              <h4 class="modal-title"><span id="dirdtlscompname"></span></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="companytype">Choose Personnel *</label>
+                      <select class="form-control select2" id="comppersonel" name="comppersonel"></select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="companytype">Appoint Date *</label>
+                      <input type="text" class="form-control dateonly" id="dirappointdt" name="dirappointdt"
+                        placeholder="DD/MM/YYYY"></input>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="companytype">Exit Date</label>
+                      <input type="text" class="form-control dateonly" id="direxitdt" name="direxitdt"
+                        placeholder="DD/MM/YYYY"></input>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtdirconfig">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-vwdirectorconfig">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content vwdirectorconfig">
+          <div class="modal-header">
+            <h4 class="modal-title">Directors of the company:</h4>&nbsp;
+            <h4 class="modal-title"><span id="vwdirdtlscompname"></span></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="hfvvwconfigdirectorcompid" name="hfvvwconfigdirectorcompid" />
+            <h6 class="text-danger"><b>Director(s) can only be exited. After exit to add again follow "Config. New
+                Director" option</b></h6>
+            <div class="card-body">
+              <div class="row pb-3">
+                <div class="col-md-3">
+                  <button type="button" class="btn bg-maroon adddirdtls">
+                    Config. New Director
+                  </button>
+                </div>
+              </div>
+              <table class="table table-bordered" id="tblvwdirectorconfig">
+                <thead>
+                  <tr>
+                    <th>Director Name</th>
+                    <th>Appoint Date</th>
+                    <th>Exit Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyvwdirectorconfig">
+                </tbody>
+              </table>
+              <!-- /.table -->
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-shareholderconfig">
+      <div class="modal-dialog modal-xl">
+        <form id="shareholderconfigform" name="shareholderconfigform">
+          <input type="hidden" id="hfvconfigshareholdercompid" name="hfvconfigshareholdercompid">
+          <div class="modal-content shareholderconfig">
+            <div class="modal-header">
+              <h4 class="modal-title">Add ShareHolder for company:</h4>&nbsp;
+              <h4 class="modal-title"><span id="shareholderdtlscompname"></span></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="companytype">Choose Personnel *</label>
+                      <select class="form-control select2" id="comppersonelshareholder"
+                        name="comppersonelshareholder"></select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="companytype">Total No. of Shares *</label>
+                      <input type="text" class="form-control" id="totalshare" name="totalshare"></input>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th colspan="2">Prefernce Share</th>
+                      <th colspan="2">Ordinary Share</th>
+                      <th colspan="2">Otherkind Share</th>
+                    </tr>
+                    <tr>
+                      <th>Cash *</th>
+                      <th>Otherwise *</th>
+                      <th>Cash *</th>
+                      <th>Otherwise *</th>
+                      <th>Cash *</th>
+                      <th>Otherwise *</th>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="form-control" name="preferencecash" id="preferencecash" /></td>
+                      <td><input type="text" class="form-control" name="preferenceotherwise" id="preferenceotherwise" />
+                      </td>
+                      <td><input type="text" class="form-control" name="ordinarycash" id="ordinarycash" /></td>
+                      <td><input type="text" class="form-control" name="ordinaryotherwise" id="ordinaryotherwise" />
+                      </td>
+                      <td><input type="text" class="form-control" name="otherkindscash" id="otherkindscash" /></td>
+                      <td><input type="text" class="form-control" name="otherkindsotherwise" id="otherkindsotherwise" />
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtshareholderconfig">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-vwshareholderconfig">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content vwshareholderconfig">
+          <div class="modal-header">
+            <h4 class="modal-title">ShareHolders of the company:</h4>&nbsp;
+            <h4 class="modal-title"><span id="vwshareholdercompname"></span></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="hfvvwshareholderdtlscompid" name="hfvvwshareholderdtlscompid" />
+            <div class="card-body">
+              <div class="row pb-3">
+                <div class="col-md-3">
+                  <button type="button" class="btn bg-maroon addshareholderdtls">
+                    Add New Share Holder
+                  </button>
+                </div>
+              </div>
+              <table class="table table-bordered" id="tblvwshareholderdtlsconfig">
+                <thead>
+                  <tr>
+                    <th rowspan="2">ShareHolder Name</th>
+                    <th rowspan="2">Total Share</th>
+                    <th colspan="2">Prefernce Share</th>
+                    <th colspan="2">Ordinary Share</th>
+                    <th colspan="2">Otherkind Share</th>
+                    <th rowspan="2">Action</th>
+                  </tr>
+                  <tr>
+                    <th>Cash</th>
+                    <th>Otherwise</th>
+                    <th>Cash</th>
+                    <th>Otherwise</th>
+                    <th>Cash</th>
+                    <th>Otherwise</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyvwshareholderconfig">
+                </tbody>
+              </table>
+              <!-- /.table -->
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-adddoctype">
+      <div class="modal-dialog modal-lg">
+        <form id="frmadddoctype" name="frmadddoctype">
+          <div class="modal-content adddoctype">
+            <div class="modal-header">
+              <h4 class="modal-title">Add New Document Type</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typename">Type Name *</label>
+                      <input class="form-control" id="typename" name="typename"
+                        placeholder="Please enter document type name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typedesc">Type Description *</label>
+                      <input class="form-control" id="typedesc" name="typedesc"
+                        placeholder="Please enter document type description">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtadddoctype">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-editdoctype">
+      <div class="modal-dialog modal-lg">
+        <form id="frmeditdoctype" name="frmeditdoctype">
+          <div class="modal-content editdoctype">
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Document Type</h4>
+              <input type="hidden" id="editdoctypeid" name="editdoctypeid" />
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="edittypename">Type Name *</label>
+                      <input class="form-control" id="edittypename" name="edittypename"
+                        placeholder="Please enter document type name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="edittypedesc">Type Description *</label>
+                      <input class="form-control" id="edittypedesc" name="edittypedesc"
+                        placeholder="Please enter document type description">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmteditdoctype">Update changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-adddocname">
+      <div class="modal-dialog modal-lg">
+        <form id="frmadddocname" name="frmadddocname">
+          <div class="modal-content adddocname">
+            <div class="modal-header">
+              <h4 class="modal-title">Add New Document Name</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="doctype">Choose Document Type *</label>
+                      <select class="form-control select2" id="doctype" name="doctype">
+                        <% data.alldoctypes.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.typename%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typename">Document Name *</label>
+                      <input class="form-control" id="docname" name="docname" placeholder="Please enter document name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typedesc">Document Description *</label>
+                      <input class="form-control" id="docdesc" name="docdesc"
+                        placeholder="Please enter document description">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtadddocname">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-editdocname">
+      <div class="modal-dialog modal-lg">
+        <form id="frmeditdocname" name="frmeditdocname">
+          <div class="modal-content editdocname">
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Document Name</h4>
+              <input type="hidden" id="editdocnameid" name="editdocnameid" />
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="doctype">Choose Document Type *</label>
+                      <select class="form-control select2" id="editdoctype" name="editdoctype">
+                        <% data.alldoctypes.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.typename%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typename">Document Name *</label>
+                      <input class="form-control" id="editdocname" name="editdocname"
+                        placeholder="Please enter document name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typedesc">Document Description *</label>
+                      <input class="form-control" id="editdocdesc" name="editdocdesc"
+                        placeholder="Please enter document description">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmteditdocname">Update changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-vwcompdocs">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content vwcompdocs">
+          <div class="modal-header">
+            <h4 class="modal-title">Company Document :</h4>&nbsp;
+            <h4 class="modal-title"><span id="vwcompdocscompname"></span></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="hfvvwcompdocscompid" name="hfvvwcompdocscompid" />
+            <div class="card-body">
+              <div class="row pb-3">
+                <div class="col-md-4">
+                  <button type="button" class="btn bg-maroon addnewcompdocs">
+                    Add New Document(s)
+                  </button>
+                </div>
+              </div>
+              <table class="table table-bordered" id="tblvwcompdocs">
+                <thead>
+                  <tr>
+                    <th>Document Name</th>
+                    <th>File Version</th>
+                    <th>File</th>
+                    <th>Uploaded Date</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyvwcompdocs">
+                </tbody>
+              </table>
+              <!-- /.table -->
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-addcompdocs">
+      <div class="modal-dialog modal-lg">
+        <form id="frmaddcompdocs" name="frmaddcompdocs" enctype="multipart/form-data">
+          <div class="modal-content addcompdocs">
+            <div class="modal-header">
+              <h4 class="modal-title">Add New Document : </h4>&nbsp;
+              <h4 class="modal-title"><span id="addcompdocscompname"></span></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="hidden" id="addcompdocscompid" name="addcompdocscompid" />
+                      <label for="compdocname">Choose Document Name *</label>
+                      <select class="form-control select2" id="compdocname" name="compdocname">
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="docfile">Document File *</label>
+                      <input type="file" class="form-control" id="docfile" name="docfile">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="typedesc">Document Description *</label>
+                      <input class="form-control" id="compdocdesc" name="compdocdesc"
+                        placeholder="Please enter document description">
+                    </div>
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="sbmtaddcompdoc">Save changes</button>
+            </div>
+          </div>
+        </form>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+  </section>
+  <!-- Custom JS Scripts-->
+  <%- include('../include/footer.ejs') %>
+    <script src="/dist/js/pages/company.js"></script>

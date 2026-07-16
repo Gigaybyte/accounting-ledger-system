@@ -1,0 +1,417 @@
+<%- include('../include/header.ejs') %>
+
+  <section class="content">
+    <div class="container-fluid">
+
+
+      <div class="row">
+        <div class="pt-2 col-md-12">
+
+          <div class="card card-primary card-tabs">
+            <div class="card-header p-0 pt-1">
+              <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                <li class="pt-2 px-3">
+                  <h3 class="card-title">All Reports</h3>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" id="coall-tab" data-toggle="pill" href="#coall" role="tab"
+                    aria-controls="coall" aria-selected="false">COA Wise Ledger List</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="mtrans-tab" data-toggle="pill" href="#mtrans" role="tab"
+                    aria-controls="mtrans" aria-selected="false">Miss Transactions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pnl-tab" data-toggle="pill" href="#pnl" role="tab" aria-controls="pnl"
+                    aria-selected="false">Profit & Loss</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tb-tab" data-toggle="pill" href="#tb" role="tab" aria-controls="tb"
+                    aria-selected="false">Trial Balance</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="bs-tab" data-toggle="pill" href="#bs" role="tab" aria-controls="bs"
+                    aria-selected="false">Balance Sheet</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="custom-tabs-two-tabContent">
+                <div class="tab-pane fade active show" id="coall" role="tabpanel" aria-labelledby="coall-tab">
+                  <div class="row mb-2">
+                    <div class="col-md-2">Choose Company :</div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="coallcompany" name="coallcompany">
+                        <option value="0">Select a company</option>
+                        <% data.allcompanies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      Choose COA Item:
+                    </div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="coallcoa" name="coallcoa">
+                        <option value="0">Select a COA item</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                  <div class="row mt-5">
+                    <div class="col-md-12">
+                      <table class="table table-bordered table-striped" id="tblvwcoall">
+                        <thead>
+                          <tr>
+                            <th>Ledger Name</th>
+                            <th>Ledger Type</th>
+                            <th>Opening Date</th>
+                            <th>Opening Balance</th>
+                            <th>Total Credit</th>
+                            <th>Total Debit</th>
+                            <th>Balance</th>
+                            <th>Ledger Description</th>
+                          </tr>
+                        </thead>
+                        <tfoot>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="mtrans" role="tabpanel" aria-labelledby="mtrans-tab">
+                  <div class="row mb-2">
+                    <div class="col-md-2">Choose Company :</div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="mtranscompany" name="mtranscompany">
+                        <option value="0">Select a company</option>
+                        <% data.allcompanies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+
+                  </div>
+                  <!-- /.row -->
+                  <div class="row mt-5 vwmtransrpt">
+                    <h6 class="text-danger"><b>Important : Once you revert any transaction then;
+                        <ol>
+                          <li>All relevant entries will be deleted</li>
+                          <li>If it is through bank statement then the transaction will be unrealized.</li>
+                        </ol>
+                      </b></h6>
+                    <div class="col-md-8">
+                      <table class="table table-bordered" id="tblmtransreport">
+                        <thead>
+                          <th>Entry Description</th>
+                          <th>Credit (RM)</th>
+                          <th>Debit (RM)</th>
+                          <th>Difference (RM)</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody id="tblmtransreportbody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="pnl" role="tabpanel" aria-labelledby="pnl-tab">
+                  <div class="row mb-2">
+                    <div class="col-md-2">Choose Company :</div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="pnlcompany" name="pnlcompany">
+                        <option value="0">Select a company</option>
+                        <% data.allcompanies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                  <div class="row">
+                    <div class="col-md-2">Choose Date Range</div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control dateranger" id="daterangepnl" name="daterangepnl" />
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn bg-purple" id="btnpnlrpt">
+                        View Report
+                      </button>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+
+                  <div class="row mt-5 vwpnlrpt">
+                    <div class="col-md-6 hidden-area" id="pnlreport_showarea">
+                      <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded shadow-sm">
+                        <h3 class="mb-0">
+                          <i class="fas fa-chart-line me-2"></i>
+                          Profit & Loss Report
+                        </h3>
+
+                        <button id="btnExportExcelPL" class="btn btn-success shadow-sm">
+                          <i class="fas fa-file-excel me-2"></i> Export to Excel
+                        </button>
+                      </div>
+                      <br />
+
+                      <table class="table table-bordered" id="tblpnlreport">
+                        <thead>
+                          <th>Head Name</th>
+                          <th>Trans Type</th>
+                          <th>Ledger Name</th>
+                          <th>Amount (RM)</th>
+                        </thead>
+                        <tbody id="tblpnlreportbody"></tbody>
+                      </table>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="tb" role="tabpanel" aria-labelledby="tb-tab">
+                  <div class="row mb-2">
+                    <div class="col-md-2">Choose Company :</div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="tbcompany" name="tbcompany">
+                        <option value="0">Select a company</option>
+                        <% data.allcompanies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      Choose Date Range
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control dateranger" id="daterangetb" name="daterangetb">
+                    </div>
+                    <div class="col-md-4">
+                      <button type="button" class="btn bg-purple" id="btntbrpt">View Report [All]</button>
+                      <button type="button" class="btn bg-pink" id="btntbrptnonzero">View Report [Non-Zero]</button>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                  <div class="row mt-5">
+                    <div class="col-md-12">
+                      <table class="table table-bordered" id="tbltbreport">
+                        <thead>
+                          <th>COA Head Name</th>
+                          <th>Ledger Name</th>
+                          <th>Opening Debit</th>
+                          <th>Opening Credit</th>
+                          <th>Trans. Debit</th>
+                          <th>Trans. Credit</th>
+                          <th>Trans. Balance</th>
+                          <th>Closing Debit</th>
+                          <th>Closing Credit</th>
+                        </thead>
+                        <tbody id="tbltbreportbody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="bs" role="tabpanel" aria-labelledby="bs-tab">
+                  <div class="row mb-2">
+                    <div class="col-md-2">Choose Company :</div>
+                    <div class="col-md-8">
+                      <select class="form-control select2" id="bscompany" name="bscompany">
+                        <option value="0">Select a company</option>
+                        <% data.allcompanies.map((element)=>{%>
+                          <option value="<%=element.id%>">
+                            <%=element.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      Choose Date Range
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control dateranger" id="daterangebs" name="daterangebs">
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn bg-purple" id="btnbsrpt">View Report</button>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                  <!-- <div class="row mt-5" id="vwbsreport">
+                    <div class="col-md-12">
+                      <table class="table table-bordered" id="tblbseport">
+                        <thead>
+                          <th>Name</th>
+                          <th>Opening Debit Balance</th>
+                          <th>Opening Credit Balance</th>
+                          <th>Final Debit</th>
+                          <th>Final Credit</th>
+                          <th>Balance Debit</th>
+                          <th>Balance Credit</th>
+                          <th>Balance</th>
+                        </thead>
+                        <tbody id="tblbsreportbody"></tbody>
+                      </table>
+                    </div>
+                  </div> -->
+                  <div class="row mt-5" id="vwbsreport">
+                    <div id="vwbsreport_showarea" class="hidden-area">
+                      <div class="col-12 mb-3">
+                        <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded shadow-sm">
+                          <h3 class="mb-0">
+                            <i class="fas fa-file-invoice-dollar me-2"></i>
+                            Balance Sheet Report
+                          </h3>
+                          <button id="btnExportExcel" class="btn btn-success shadow-sm">
+                            <i class="fas fa-file-excel me-2"></i> Export to Excel
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <table class="table table-bordered" id="tblbseport">
+                          <thead>
+                            <th>Name</th>
+                            <th>Opening Debit Balance</th>
+                            <th>Opening Credit Balance</th>
+                            <th>Final Debit</th>
+                            <th>Final Credit</th>
+                            <th>Balance Debit</th>
+                            <th>Balance Credit</th>
+                            <th>Balance</th>
+                          </thead>
+                          <tbody id="tblbsreportbody"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+  <div class="modal fade" id="modal-viewentrystatement">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Detailed Statement</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-bordered table-striped" id="tblvwledgerstatement">
+                  <thead>
+                      <tr>
+                          <th>Entry Date</th>
+                          <th>Posting Date</th>
+                          <th class="w-30">Description</th>
+                          <th>Debit</th>
+                          <th>credit</th>
+                          <th>Balance</th>
+                          <th>Type</th>
+                      </tr>
+                  </thead>
+                  <tbody id="vwledgerstatement">
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+ <div class="modal fade" id="modal-viewentrydetails">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Entry Details: <span id="eid"></span></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body vwentrystatement">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden" id="editentryid" name="editentryid">
+                        <table class="table table-bordered table-striped" id="tblvwentrystatement">
+                            <thead>
+                                <tr>
+                                    <th class="w-15">Entry Date</th>
+                                    <th class="w-10">Posting Date</th>
+                                    <th class="w-25">Ledger Name</th>
+                                    <th>Description</th>
+                                    <th class="w-15">Debit</th>
+                                    <th class="w-15">credit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vwentrystatement">
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+  <!-- Custom JS Scripts-->
+  <%- include('../include/footer.ejs') %>
+    <script src="/dist/js/pages/reports.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>

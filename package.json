@@ -1,0 +1,40 @@
+{
+  "name": "accapp",
+  "version": "1.0.0",
+  "description": "Online Accounting",
+  "main": "newaccappidx.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "nodemon newaccappidx.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.37",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "dateformat": "^5.0.3",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "express-validator": "^7.0.1",
+    "fs": "^0.0.1-security",
+    "generate-password": "^1.7.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "mysql2": "^3.6.5",
+    "nodemailer": "^6.9.10",
+    "otp-generator": "^4.0.1",
+    "password-validator": "^5.3.0",
+    "path": "^0.12.7",
+    "sequelize": "^6.35.1",
+    "switchcase": "^1.0.11",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

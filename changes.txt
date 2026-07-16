@@ -1,0 +1,246 @@
+function exportToExcel(dataTable, ledgerEl, startDate, endDate) {
+  let allData = dataTable.data().toArray();
+  let filteredData = allData;
+  let exportInfo = "";
+
+  if (startDate && endDate) {
+    const startParts = startDate.split("/");
+    const endParts = endDate.split("/");
+    const start = new Date(startParts[2], startParts[1] - 1, startParts[0]);
+    const end = new Date(endParts[2], endParts[1] - 1, endParts[0]);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
+
+    filteredData = allData.filter((row) => {
+      if (!row.entrydate) return false;
+      const rowDate = new Date(row.entrydate);
+      return rowDate >= start && rowDate <= end;
+    });
+
+    exportInfo = ` (${startDate} to ${endDate})`;
+
+    if (filteredData.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data",
+        text: "No records found in the selected date range.",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+  }
+
+  Swal.fire({
+    title: "Exporting...",
+    text: "Please wait while we prepare your export",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  setTimeout(() => {
+    try {
+      let finalData = [...filteredData];
+      if (typeof openingRow !== "undefined" && openingRow && !startDate) {
+        finalData.unshift(openingRow);
+      }
+
+      const wsData = [];
+
+      const headers = [];
+      $("#tblvwledgerstatement thead tr th").each(function () {
+        headers.push($(this).text().trim());
+      });
+
+      let openingValue = "";
+
+      if (startDate && endDate) {
+        const startParts = startDate.split("/");
+        const start = new Date(startParts[2], startParts[1] - 1, startParts[0]);
+
+        start.setHours(0, 0, 0, 0);
+
+        let previousRow = null;
+
+        allData.forEach((row) => {
+          if (!row.entrydate) return;
+
+          const rowDate = new Date(row.entrydate);
+
+          if (rowDate < start) {
+            previousRow = row;
+          }
+        });
+
+        if (previousRow) {
+          openingValue = `${Number(previousRow.balance || 0).toLocaleString(
+            undefined,
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            },
+          )} ${previousRow.baltype || "Dr"}`;
+        }
+      }
+
+      if (!openingValue) {
+        openingValue = $("#tblvwledgerstatement tbody tr.group-row")
+          .first()
+          .find(".badge-primary")
+          .text()
+          .replace("Opening:", "")
+          .trim();
+      }
+
+      wsData.push(["", "", `Opening Balance: ${openingValue}`, "", "", "", ""]);
+
+      wsData.push([]);
+      wsData.push(headers);
+
+      finalData.forEach((row) => {
+        let drValue = 0;
+        let crValue = 0;
+        let balanceValue = 0;
+
+        if (row.dr !== "" && row.dr !== null && !isNaN(parseFloat(row.dr))) {
+          drValue = parseFloat(row.dr);
+        }
+
+        if (row.cr !== "" && row.cr !== null && !isNaN(parseFloat(row.cr))) {
+          crValue = parseFloat(row.cr);
+        }
+
+        if (
+          row.balance !== "" &&
+          row.balance !== null &&
+          !isNaN(parseFloat(row.balance))
+        ) {
+          balanceValue = parseFloat(row.balance);
+        }
+
+        const rowData = [
+          row.entrydate ? moment(row.entrydate).format("DD/MM/YYYY") : "",
+          row.createddate ? moment(row.createddate).format("DD/MM/YYYY") : "",
+          row.narration ? row.narration.replace(/<[^>]*>/g, "") : "",
+          drValue,
+          crValue,
+          balanceValue,
+          row.baltype || "",
+        ];
+        wsData.push(rowData);
+      });
+
+      let totalDr = 0,
+        totalCr = 0;
+      finalData.forEach((row) => {
+        if (row.dr !== "" && row.dr !== null && !isNaN(parseFloat(row.dr))) {
+          totalDr += parseFloat(row.dr);
+        }
+        if (row.cr !== "" && row.cr !== null && !isNaN(parseFloat(row.cr))) {
+          totalCr += parseFloat(row.cr);
+        }
+      });
+
+      wsData.push([]);
+      wsData.push([
+        "TOTAL",
+        "",
+        "",
+        totalDr,
+        totalCr,
+        Math.abs(totalCr - totalDr),
+        totalCr - totalDr > 0 ? "Cr" : "Dr",
+      ]);
+
+      const footerRow = [];
+      $("#tblvwledgerstatement tfoot tr th").each(function () {
+        footerRow.push($(this).text().trim());
+      });
+
+      if (footerRow.length > 0 && footerRow.some((text) => text !== "")) {
+        wsData.push(footerRow);
+      }
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+      ws["!cols"] = [
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 40 },
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 10 },
+      ];
+
+      const range = XLSX.utils.decode_range(ws["!ref"] || "A1:G1");
+
+      for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const address = XLSX.utils.encode_cell({ r: R, c: C });
+          if (!ws[address]) continue;
+
+          if (C === 3 || C === 4 || C === 5) {
+            // Check if it's a number
+            if (typeof ws[address].v === "number") {
+              ws[address].z = "#,##0.00";
+              ws[address].t = "n";
+            }
+          }
+
+          // Style headers
+          if (R === 0) {
+            ws[address].s = {
+              font: { bold: true, sz: 12 },
+              fill: { fgColor: { rgb: "FFE0E0E0" } },
+              alignment: { horizontal: "center" },
+            };
+          }
+
+          // Style total row
+          if (R === wsData.length - 1 && ws[address].v === "TOTAL") {
+            ws[address].s = {
+              font: { bold: true },
+              fill: { fgColor: { rgb: "FFFF00" } },
+            };
+          }
+        }
+      }
+
+      // FILENAME
+      let filename = "Ledger_Statement";
+      if (ledgerEl && ledgerEl.innerText && ledgerEl.innerText.trim() !== "") {
+        filename = ledgerEl.innerText.trim();
+      }
+
+      if (startDate && endDate) {
+        const startClean = startDate.replace(/\//g, "-");
+        const endClean = endDate.replace(/\//g, "-");
+        filename = `${filename}_${startClean}_to_${endClean}`;
+      }
+
+      filename = filename.replace(/\s+/g, "_").replace(/[\\/:*?"<>|]/g, "");
+
+      XLSX.utils.book_append_sheet(wb, ws, "Ledger Statement");
+      XLSX.writeFile(wb, `${filename}.xlsx`);
+
+      Swal.fire({
+        icon: "success",
+        title: "Export Successful!",
+        text: `${filteredData.length} records exported${exportInfo}.`,
+        confirmButtonText: "OK",
+        timer: 3000,
+      });
+    } catch (error) {
+      console.error("Export error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Export Failed",
+        text: "An error occurred while exporting. Please try again.",
+        confirmButtonText: "OK",
+      });
+    }
+  }, 100);
+}

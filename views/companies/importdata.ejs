@@ -1,0 +1,419 @@
+<%- include('../include/header.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-6"><button type="button" class="btn bg-purple" data-toggle="modal"
+                            data-target="#modal-newdataimport">Add New Bank Statement</button></div>
+                    <div class="col-md-6"><button type="button" class="btn bg-info" data-toggle="modal"
+                            data-target="#modal-viewdataimport">Check Imported Bank Statement</button></div>
+                    <input type="hidden" id="companyid" name="companyid">
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Existing Imports (if Any)</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="dt_importdata" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>TransactionID</th>
+                                    <th>LedgerID</th>
+                                    <th>TaxcodeID</th>
+                                    <th>EntryID</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th>Balance</th>
+                                    <th>Realized</th>
+                                    <th>RealizedEntryID</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>TransactionID</th>
+                                    <th>LedgerID</th>
+                                    <th>TaxcodeID</th>
+                                    <th>EntryID</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th>Balance</th>
+                                    <th>Realized</th>
+                                    <th>RealizedEntryID</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-2"><button type="button" class="btn btn-danger" id="btnimportreset">Reset
+                                    Transaction Table</button></div>
+                            <div class="col-md-2"><button type="button" class="btn btn-primary"
+                                    id="btnimportdata">Import to System</button></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-newdataimport">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add New Import Task</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ledger">Choose Company *</label>
+                                        <select class="form-control select2" id="comps" name="comps">
+                                            <% data.allcompanies.map((element)=>{%>
+                                                <%if(element){%>
+                                                    <option value="<%=element.id%>">
+                                                        <%=element.name%>
+                                                    </option>
+                                                    <% }})%>
+                                        </select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ledger">Choose Ledger *</label>
+                                        <select class="form-control select2" id="ledger" name="ledger"></select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="acctype">Choose Account Type</label>
+                                        <select id="acctype" name="acctype" class="select2">
+                                            <option value="RHBLC">RHB Bank Local Currency</option>
+                                            <option value="RHBMC">RHB Bank Multi Currency</option>
+                                            <option value="CIMBLC">CIMB Bank Local Currency</option>
+                                            <option value="MBLC">MAY Bank Local Currency</option>
+                                            <option value="BOQ">BOQ AUD Currency</option>
+
+                                          
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="acccurr">Currency</label>
+                                        <select id="acccurr" name="acccurr" class="select2">
+                                            <option>AUD</option>
+                                            <option>MYR</option>
+                                            <option>USD</option>
+                                            <option>SGD</option>
+                                            <option>CAD</option>
+                                            <option>SAR</option>
+                                            <option>GBP</option>
+                                          
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="importfile">Choose File *</label>
+                                        <input class="form-control" type="file" id="importfile" name="importfile">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="sbmtimportfile">Start Import</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="modal-viewdataimport">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">View Imported Data</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ledger">Choose Company *</label>
+                                        <select class="form-control select2" id="vwcomps" name="vwcomps">
+                                            <% data.allcompanies.map((element)=>{%>
+                                                <%if(element){%>
+                                                    <option value="<%=element.id%>">
+                                                        <%=element.name%>
+                                                    </option>
+                                                    <% }})%>
+                                        </select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="vwledger">Choose Ledger *</label>
+                                        <select class="form-control select2" id="vwledger" name="vwledger"></select>
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="daterange">Choose Date Range *</label>
+                                        <input type="text" class="form-control dateranger" id="daterange"
+                                            name="daterange">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="btnviewimportfile">Check Data</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <!-- /.modal -->
+        <div class="modal fade" id="modal-newledger">
+            <div class="modal-dialog modal-lg">
+                <form id="addnewledgerform" name="addnewledgerform">
+                    <input type="hidden" id="ledgerid" name="ledgerid">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add New Ledger</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body addledger">
+                            <h6 class="text-danger"><b>(*) marked fields are mandatory to enter</b></h6>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="company">Choose Company *</label>
+                                            <select class="form-control select2" id="company" name="company">
+                                                <% data.allcompanies.map((element)=>{%>
+                                                    <option value="<%=element.id%>">
+                                                        <%=element.name%>
+                                                    </option>
+                                                    <% })%>
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                    </div>
+                                    <!-- /.col -->
+
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ledgername">Ledger Name *</label>
+                                            <input class="form-control" id="ledgername" name="ledgername"
+                                                placeholder="Please enter ledger name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ledgertype">Ledger Group Name *</label>
+                                            <select class="form-control" id="ledgertype" name="ledgertype">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="recreq">Reconciliation Required</label><br>
+                                            <input type="checkbox" id="recreq" name="recreq" name="my-checkbox" checked
+                                                data-bootstrap-switch data-off-color="danger" data-on-color="success"
+                                                data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="taxcode">Tax Impose *</label>
+                                            <select class="form-control" id="taxcode" name="taxcode">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="taxcode">Financial Year *</label>
+                                            <select class="form-control" id="finyear" name="finyear">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="ledgeropdt">Opening Date *</label>
+                                            <input class="form-control" id="ledgeropdt" name="ledgeropdt"
+                                                placeholder="dd/mm/yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="ledgeropbal">Opening Balance *</label>
+                                            <input class="form-control" id="ledgeropbal" name="ledgeropbal"
+                                                placeholder="Please enter opening balance of the ledger">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="opbaltype">Opening Balance Type *</label>
+                                            <select class="form-control" id="opbaltype" name="opbaltype">
+                                                <option>Cr</option>
+                                                <option>Dr</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="ledtype">Ledger Type</label>
+                                            <select class="form-control" id="ledtype" name="ledtype">
+                                                <option value="1">Cash</option>
+                                                <option value="2">Bank</option>
+                                                <option value="0">N/A</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 pl-5">
+                                        <div class="form-group">
+                                            <label for="ledgersts">Active</label><br>
+                                            <input type="checkbox" id="ledgersts" name="ledgersts" name="my-checkbox"
+                                                checked data-bootstrap-switch data-off-color="danger"
+                                                data-on-color="success" data-off-text="No" data-on-text="yes">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ledgerdesc">Ledger Description *</label>
+                                            <input class="form-control" id="ledgerdesc" name="ledgerdesc"
+                                                placeholder="Please enter if any description of the ledger">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="sbmtnewledgeradd">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <div class="modal fade" id="modal-viewentrystatement">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Entry Details</h4>
+                        <input type="hidden" id="hfventrydtlsid" name="hfventrydtlsid" />
+                        <button class="btn btn-md btn-danger ml-3" id="btntransrevert" type="button">Revert</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 divtransrevert">
+                                    <table class="table table-bordered table-striped" id="tblvwentrystatement">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-10">Entry Type</th>
+                                                <th>Entry & Posting Date</th>
+                                                <th>Ledger Name</th>
+                                                <th class="w-40">Description</th>
+                                                <th class="w-10">Debit</th>
+                                                <th class="w-10">credit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="vwentrystatement">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
+
+    </section>
+    <!-- Custom JS Scripts-->
+    <%- include('../include/footer.ejs') %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js"></script>
+        <script src="/dist/js/pages/importdata.js"></script>
