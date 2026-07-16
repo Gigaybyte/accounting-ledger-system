@@ -5,7 +5,8 @@
   "main": "newaccappidx.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "nodemon newaccappidx.js"
+    "dev": "nodemon newaccappidx.js",
+    "start": "node newaccappidx.js"
   },
   "author": "",
   "license": "ISC",
